@@ -74,14 +74,15 @@ if [ ! -e "$RUBY_HOME" ]; then
   echo Installing ruby runtime.
   
   curl -Os "https://raw.githubusercontent.com/shibayan/AzureWebSitesSetupScripts/master/ruby/$RUBY_VERSION.bat"
-  cmd.exe /c "$RUBY_VERSION.bat" >/dev/null
+  cmd.exe /c "$RUBY_VERSION.bat" > /dev/null
   rm -f "$RUBY_VERSION".bat
 fi
 
 if [ ! -e "$RUBY_HOME/bin/bundle" ]; then
   echo Installing bundler
   
-  "$RUBY_HOME/bin/ruby.exe" "$RUBY_HOME/bin/gem" install bundler --no-ri --no-rdoc --quiet
+  "$RUBY_HOME/bin/ruby.exe" "$RUBY_HOME/bin/gem" install bundler --no-ri --no-rdoc --quiet > /dev/null
+  exitWithMessageOnError "gem install bundler failed"
 fi
 
 ##################################################################################################################################
@@ -100,6 +101,8 @@ fi
 if [ -e "$DEPLOYMENT_TARGET/Gemfile" ]; then
   cd "$DEPLOYMENT_TARGET"
   "$RUBY_HOME/bin/ruby.exe" "$RUBY_HOME/bin/bundle" install
+  exitWithMessageOnError "bundle install failed"
+
 fi
 
 ##################################################################################################################################
