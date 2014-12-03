@@ -78,6 +78,12 @@ if [ ! -e "$RUBY_HOME" ]; then
   rm -f "$RUBY_VERSION".bat
 fi
 
+if [ ! -e "$RUBY_HOME/cacert.pem" ]; then
+  curl -s "http://curl.haxx.se/ca/cacert.pem" > "$RUBY_HOME/cacert.pem"
+fi
+
+export SSL_CERT_FILE="$RUBY_HOME/cacert.pem"
+
 if [ ! -e "$RUBY_HOME/bin/bundle" ]; then
   echo Installing bundler
   
